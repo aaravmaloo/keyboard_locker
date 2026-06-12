@@ -1,0 +1,26 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install mingw
+        run: sudo apt-get install -y mingw-w64
+
+      - name: build
+        run: make release
+
+      - name: release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: klock.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
